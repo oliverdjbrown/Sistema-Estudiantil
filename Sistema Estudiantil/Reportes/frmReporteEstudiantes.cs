@@ -8,13 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Sistema_Estudiantil
+namespace Sistema_Estudiantil.Reportes
 {
-    public partial class Form1 : Form
+    public partial class frmReporteEstudiantes : Form
     {
-        public Form1()
+        public frmReporteEstudiantes()
         {
             InitializeComponent();
+        }
+
+        private void frmReporteEstudiantes_Load(object sender, EventArgs e)
+        {
+
+            this.reportViewer1.RefreshReport();
         }
     }
 }
