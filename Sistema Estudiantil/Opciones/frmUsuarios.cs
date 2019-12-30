@@ -13,6 +13,7 @@ namespace Sistema_Estudiantil.Opciones
 {
     public partial class frmUsuarios : Form
     {
+        int result;
         public frmUsuarios()
         {
             InitializeComponent();
@@ -49,21 +50,52 @@ namespace Sistema_Estudiantil.Opciones
                 dgvElementos.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(13, 93, 142);
                 dgvElementos.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
                 dgvElementos.ColumnHeadersDefaultCellStyle.Font = new Font("Tahoma", 8.0F, FontStyle.Bold);
+                dgvElementos.Columns[2].Visible = false;
+                dgvElementos.Columns[4].Visible = false;
+                dgvElementos.Columns[5].Visible = false;
+                dgvElementos.Columns[6].Visible = false;
             }
+        }
+
+        void ValidarCampos()
+        {
+            if (txtUsuario.Text == "" || cbPrivilegios.Text == "" || txtPassword.Text == "" || txtConfirmPassword.Text == "") 
+            { MessageBox.Show("Validar los Campos Obligatorios(*).", "!Advertencia!", MessageBoxButtons.OK, MessageBoxIcon.Warning); }            
+            else { ValidarPassword(txtPassword.Text, txtConfirmPassword.Text); }
+        }
+
+        int ValidarPassword(string valor1, string valor2)
+        {           
+            if(valor1 == valor2) { result = 1; } 
+            else 
+            { 
+                result = 0;
+                MessageBox.Show("Las Contraseñas no coinciden.", "!Advertencia!", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            return result;
         }
 
         void Guardar()
         {
-            using (var context = new programacion3Entities())
+            ValidarCampos();
+            if (result == 1)
             {
-                var std = new usuarios()
+                using (var context = new programacion3Entities())
                 {
-                    usuario = txtUsuario.Text
-                };
-                context.usuarios.Add(std);
-                context.SaveChanges();
-            }
-            CargarDatos();
+                    var std = new usuarios()
+                    {
+                        usuario = txtUsuario.Text,
+                        password = txtPassword.Text,
+                        privilegio = cbPrivilegios.Text,
+                        fechaCreacion = DateTime.Now,
+                        estatus = 1                        
+                    };
+                    context.usuarios.Add(std);
+                    context.SaveChanges();
+                }
+                LimpiarCampos();
+                CargarDatos();
+            }            
         }
 
         void Filtrar()
@@ -73,6 +105,14 @@ namespace Sistema_Estudiantil.Opciones
                 var lista = context.usuarios.Where(s => s.usuario.Contains(txtBuscar.Text)).ToList();
                 dgvElementos.DataSource = context.usuarios.Local.ToBindingList();
             }
+        }
+
+        void LimpiarCampos()
+        {
+            txtUsuario.Clear();
+            txtPassword.Clear();
+            txtConfirmPassword.Clear();
+            cbPrivilegios.Text = "";
         }
 
         private void frmUsuarios_Load(object sender, EventArgs e)
@@ -88,6 +128,11 @@ namespace Sistema_Estudiantil.Opciones
         private void btnAgregar_Click(object sender, EventArgs e)
         {
             Guardar();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
