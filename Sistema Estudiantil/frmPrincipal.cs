@@ -45,5 +45,27 @@ namespace Sistema_Estudiantil
             Opciones.frmUsuarios frm = new Opciones.frmUsuarios();
             frm.Show();
         }
+
+        private void estudiantesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Opciones.frmRegistroEstudiantes frm = new Opciones.frmRegistroEstudiantes();
+            frm.Show();
+        }
+
+        private void estudiantesToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Reportes.frmReporteEstudiantes frm = new Reportes.frmReporteEstudiantes();
+            frm.Show();
+        }
+
+        private void aulasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materiasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
